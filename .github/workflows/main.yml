@@ -19,10 +19,13 @@ jobs:
                   node-version: "14" # Specify the Node.js version
 
             - name: Install dependencies
-              run: npm install
+              run: |
+                  cd test
+                  npm install
 
             - name: Build Angular app
               run: |
+                  cd test
                   npm run build
 
             # - name: Deploy to Local IIS
