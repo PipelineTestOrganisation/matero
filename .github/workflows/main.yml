@@ -1,4 +1,4 @@
-name: Deploy Angular App to Local IIS
+name: Build, Test, and Deploy Angular App
 
 on:
     push:
@@ -6,33 +6,47 @@ on:
             - main # Trigger the workflow on push to the main branch
 
 jobs:
-    build-and-deploy:
+    test:
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v2
 
             - name: Set up Node.js
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v2
               with:
-                  node-version: "20" # Specify the Node.js version
+                  node-version: "14" # Specify the Node.js version
 
             - name: Install dependencies
               run: |
                   cd test
-                  npm install
+                  npm install --legacy-peer-deps
+
+            - name: Run tests
+              run: |
+                  cd test
+                  npm run test
+
+    deploy:
+        needs: test # Ensure the deploy job runs after the test job
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "14" # Specify the Node.js version
+
+            - name: Install dependencies
+              run: |
+                  cd test
+                  npm install --legacy-peer-deps
 
             - name: Build Angular app
               run: |
                   cd test
                   npm run build
-
-            # - name: Deploy to Local IIS
-            #   env:
-            #       LOCAL_IIS_PATH: ${{ secrets.LOCAL_IIS_PATH }}
-            #   run: |
-            #       echo "Deploying to local IIS server..."
-            #       # Use a deployment tool or script to copy files to the local IIS directory
-            #       # Example using rsync (ensure rsync is configured)
-            #       rsync -avz dist/your-angular-app/ ${{ secrets.LOCAL_IIS_PATH }}
