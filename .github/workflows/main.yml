@@ -1,52 +1,50 @@
 name: Build, Test, and Deploy Angular App
 
 on:
-    push:
-        branches:
-            - main # Trigger the workflow on push to the main branch
+  push:
+    branches:
+      - main # Trigger the workflow on push to the main branch
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    defaults:
+      run:
+        working-directory: test # Set the working directory for the test job
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20" # Specify the Node.js version
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # Specify the Node.js version
 
-            - name: Install dependencies
-              run: |
-                  cd test
-                  npm install
+      - name: Install dependencies
+        run: npm install
 
-            - name: Run tests
-              run: |
-                  cd test
-                  npm run test
+      - name: Run tests
+        run: npm run test
 
-    deploy:
-        needs: test # Ensure the deploy job runs after the test job
-        runs-on: ubuntu-latest
+  deploy:
+    needs: test # Ensure the deploy job runs after the test job
+    defaults:
+      run:
+        working-directory: test # Set the working directory for the test job
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20" # Specify the Node.js version
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # Specify the Node.js version
 
-            - name: Install dependencies
-              run: |
-                  cd test
-                  npm install
+      - name: Install dependencies
+        run: npm install
 
-            - name: Build Angular app
-              run: |
-                  cd test
-                  npm run build
+      - name: Build Angular app
+        run: npm run build
