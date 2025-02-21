@@ -23,7 +23,6 @@ jobs:
 
             - name: Build Angular app
               run: |
-                  echo ${{secret}}
                   npm run build
 
             # - name: Deploy to Local IIS
