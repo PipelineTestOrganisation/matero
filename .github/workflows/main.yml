@@ -21,7 +21,7 @@ jobs:
             - name: Install dependencies
               run: |
                   cd test
-                  npm install --legacy-peer-deps
+                  npm install
 
             - name: Run tests
               run: |
@@ -44,7 +44,7 @@ jobs:
             - name: Install dependencies
               run: |
                   cd test
-                  npm install --legacy-peer-deps
+                  npm install
 
             - name: Build Angular app
               run: |
