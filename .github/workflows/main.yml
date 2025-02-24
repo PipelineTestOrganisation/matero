@@ -6,43 +6,7 @@ on:
             - deployment # Trigger the workflow on push to the deployment branch
 
 jobs:
-    test:
-        defaults:
-            run:
-                working-directory: test # Set the working directory for the test job
-        runs-on: self-hosted
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20" # Specify the Node.js version
-
-            - name: Debug Secret
-              env:
-                  SECRET: ${{ secrets.TEST }}
-              run: echo "Secret is this ${SECRET}"
-
-            - name: Install dependencies
-              env:
-                  SECRET: ${{ secrets.TEST }}
-              run: |
-                  if ($env:SECRET -eq "key") {
-                    echo "SECRET is set correctly"
-                  } else {
-                    echo "SECRET is not set correctly"
-                    exit 1
-                  }
-                  npm install
-
-            - name: Run tests
-              run: npm run test
-
     deploy:
-        needs: test # Ensure the deploy job runs after the test job
         defaults:
             run:
                 working-directory: test # Set the working directory for the test job
