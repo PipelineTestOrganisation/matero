@@ -20,9 +20,9 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
-              with:
-                  ref: ${{ github.event.inputs.version || 'deployment' }}
-                  fetch-depth: 0 # Fetch all history for all branches and tags
+              # with:
+              #     ref: ${{ github.event.inputs.version || 'deployment' }}
+              #     fetch-depth: 0 # Fetch all history for all branches and tags
 
             - name: Set up Node.js
               uses: actions/setup-node@v4
@@ -43,11 +43,11 @@ jobs:
                   Stop-IISSite -name "angular app" -confirm:$false
               shell: powershell
 
-            # - name: Backup IIS Directory
-            #   run: |
-            #       echo "Making backup"
-            #       Copy-Item -Recurse -Path "C:\iisServer\angular" -Destination "C:\iisServer\angular-$(Get-Date -Format 'dd-MM-yyyy')"
-            #   shell: powershell
+            - name: Backup IIS Directory
+              run: |
+                  echo "Making backup"
+                  Copy-Item -Recurse -Path "C:\iisServer\angular" -Destination "C:\iisServer\angular-$(Get-Date -Format 'dd-MM-yyyy')"
+              shell: powershell
 
             - name: deploy
               run: |
