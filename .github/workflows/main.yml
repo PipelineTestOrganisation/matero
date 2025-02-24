@@ -28,18 +28,13 @@ jobs:
               run: npm run build
 
             - name: Stop IIS Site
-              run: |
-                  # Stop the specific IIS site
-                  Stop-IISSite -Name "angular app"
+              run: Stop-IISSite -name "angular app"
               shell: powershell
 
             - name: deploy
-              run: |
-                  cp -r dist\test\browser\* C:\iisServer\angular\
+              run: cp -r dist\test\browser\* C:\iisServer\angular\
               shell: powershell
 
             - name: Start IIS Site
-              run: |
-                  # Start the specific IIS site
-                  Start-IISSite -Name "angular app"
+              run: Start-IISSite -Name "angular app"
               shell: powershell
