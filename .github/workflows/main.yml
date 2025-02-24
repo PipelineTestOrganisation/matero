@@ -25,20 +25,30 @@ jobs:
               run: npm install
 
             - name: Build Angular app
-              run: npm run build
+              run: |
+                  echo building app
+                  npm run build
 
             - name: Stop IIS Site
-              run: Stop-IISSite -name "angular app" -confirm:$false
+              run: |
+                  echo stopping IIS server
+                  Stop-IISSite -name "angular app" -confirm:$false
               shell: powershell
 
             - name: Backup IIS Directory
-              run: Copy-Item -Recurse -Path "C:\iisServer\angular" -Destination "C:\iisServer\angular-$(Get-Date -Format 'dd-MM-yyyy')"
+              run: |
+                  echo Making backup
+                  Copy-Item -Recurse -Path "C:\iisServer\angular" -Destination "C:\iisServer\angular-$(Get-Date -Format 'dd-MM-yyyy')"
               shell: powershell
 
             - name: deploy
-              run: cp -r dist\test\browser\* C:\iisServer\angular\
+              run: |
+                  echo deploying
+                  Copy-Item -r dist\test\browser\* C:\iisServer\angular\
               shell: powershell
 
             - name: Start IIS Site
-              run: Start-IISSite -Name "angular app"
+              run: |
+                  echo starting IIS server
+                  Start-IISSite -Name "angular app"
               shell: powershell
