@@ -4,7 +4,12 @@ on:
     push:
         branches:
             - deployment # Trigger the workflow on push to the deployment branch
-
+    workflow_dispatch:
+        inputs:
+            version:
+                description: "Commit hash or tag to roll back to (leave empty for latest push)"
+                required: false
+                type: string
 jobs:
     deploy:
         defaults:
