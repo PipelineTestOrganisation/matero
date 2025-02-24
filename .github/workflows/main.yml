@@ -30,3 +30,4 @@ jobs:
             - name: deploy
               run: |
                   Copy-Item -Recurse dist\test\browser\* C:\iisServer\angular\
+              shell: powershell
