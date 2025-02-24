@@ -23,10 +23,15 @@ jobs:
 
       - name: Install dependencies
         env: # Set the environment variable for the test job
-          SECRET: ${{secrets.SECRET}}
+          SECRET: ${{secrets.TEST}}
         run: |
-          echo "$SECRET"
-          npm install
+          if [ "$SECRET" = "test" ]; then
+            echo "SECRET is set correctly"
+          else
+            echo "SECRET is not set correctly"
+            exit 1
+          fi
+           npm install
 
       - name: Run tests
         run: npm run test
