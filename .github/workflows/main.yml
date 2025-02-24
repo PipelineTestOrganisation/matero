@@ -24,7 +24,7 @@ jobs:
       - name: Debug Secret
         env:
           SECRET: ${{ secrets.TEST }}
-        run: echo "Secret is ${SECRET}"
+        run: echo "Secret is this ${SECRET}"
 
       - name: Install dependencies
         env:
