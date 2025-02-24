@@ -3,7 +3,7 @@ name: Build, Test, and Deploy Angular App
 on:
   push:
     branches:
-      - main # Trigger the workflow on push to the main branch
+      - deployment # Trigger the workflow on push to the main branch
 
 jobs:
   test:
@@ -22,7 +22,9 @@ jobs:
           node-version: "20" # Specify the Node.js version
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          echo("${{secrets.SECRET}}")
+          npm install
 
       - name: Run tests
         run: npm run test
