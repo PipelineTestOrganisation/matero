@@ -30,12 +30,6 @@ jobs:
         env:
           SECRET: ${{ secrets.TEST }}
         run: |
-          if [ "$SECRET" = "test" ]; then
-            echo "SECRET iss set correctly"
-          else
-            echo "SECRET is not set correctly"
-            exit 1
-          fi
           npm install
 
       - name: Run tests
