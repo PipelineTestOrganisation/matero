@@ -3,7 +3,7 @@ name: Build, Test, and Deploy Angular App
 on:
   push:
     branches:
-      - deployment # Trigger the workflow on push to the main branch
+      - deployment # Trigger the workflow on push to the deployment branch
 
 jobs:
   test:
@@ -21,9 +21,14 @@ jobs:
         with:
           node-version: "20" # Specify the Node.js version
 
+      - name: Debug Secret
+        env:
+          SECRET: ${{ secrets.TEST }}
+        run: echo "Secret is ${SECRET}"
+
       - name: Install dependencies
-        env: # Set the environment variable for the test job
-          SECRET: ${{secrets.TEST}}
+        env:
+          SECRET: ${{ secrets.TEST }}
         run: |
           if [ "$SECRET" = "test" ]; then
             echo "SECRET is set correctly"
@@ -31,7 +36,7 @@ jobs:
             echo "SECRET is not set correctly"
             exit 1
           fi
-           npm install
+          npm install
 
       - name: Run tests
         run: npm run test
