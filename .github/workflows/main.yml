@@ -22,8 +22,10 @@ jobs:
           node-version: "20" # Specify the Node.js version
 
       - name: Install dependencies
+        env: # Set the environment variable for the test job
+          SECRET: ${{secrets.SECRET}}
         run: |
-          echo("${{secrets.SECRET}}")
+          echo "$SECRET"
           npm install
 
       - name: Run tests
