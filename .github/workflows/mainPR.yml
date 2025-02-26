@@ -6,15 +6,15 @@ on:
             - closed
         branches:
             - main # Trigger the workflow on push to the deployment branch
-    workflow_dispatch:
-        inputs:
-            version:
-                description: "Commit hash or tag to roll back to (leave empty for latest push)"
-                required: false
-                type: string
+    # workflow_dispatch:
+    #     inputs:
+    #         version:
+    #             description: "Commit hash (long) or tag to roll back to (leave empty for latest push). Check README for more info."
+    #             required: false
+    #             type: string
 jobs:
     deploy:
-        if: github.event.pull_request.merged == true
+        # if: github.event.pull_request.merged == true
         defaults:
             run:
                 working-directory: test # Set the working directory for the test job
