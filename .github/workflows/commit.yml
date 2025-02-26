@@ -3,7 +3,7 @@ name: Build and deploy
 on:
     push:
         branches:
-            - main # Trigger the workflow on push to the deployment branch
+            - deployment # Trigger the workflow on push to the deployment branch
     workflow_dispatch:
         inputs:
             version:
@@ -20,9 +20,9 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
-              with:
-                  ref: ${{ github.event.inputs.version || 'main' }}
-                  fetch-depth: 0 # Fetch all history for all branches and tags
+              # with:
+              #     ref: ${{ github.event.inputs.version || 'main' }}
+              #     fetch-depth: 0 # Fetch all history for all branches and tags
 
             - name: Set up Node.js
               uses: actions/setup-node@v4
