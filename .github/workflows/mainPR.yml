@@ -14,7 +14,7 @@ on:
     #             type: string
 jobs:
     deploy:
-        # if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
         defaults:
             run:
                 working-directory: test # Set the working directory for the test job
