@@ -13,7 +13,7 @@ on:
                 required: false
                 type: string
 jobs:
-    deploy:
+    build:
         if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
         defaults:
             run:
@@ -36,26 +36,36 @@ jobs:
                   echo "building app"
                   npm run build
 
+
+
+    deploy:
+        if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+        defaults:
+            run:
+                working-directory: test # Set the working directory for the test job
+        runs-on: self-hosted
+
+        steps: 
             - name: Stop IIS Site
               run: |
-                  echo "stopping IIS server"
-                  Stop-IISSite -name "angular app" -confirm:$false
+                    echo "stopping IIS server"
+                    Stop-IISSite -name "angular app" -confirm:$false
               shell: powershell
 
             - name: Backup IIS Directory
               run: |
-                  echo "Making backup"
-                  Copy-Item -Path "C:\iisServer\angular" -Destination "C:\iisServer\angular-$(Get-Date -Format 'dd-MM-yyyy')" -Recurse -force
+                    echo "Making backup"
+                    Copy-Item -Path "C:\iisServer\angular" -Destination "C:\iisServer\angular-$(Get-Date -Format 'dd-MM-yyyy')" -Recurse -force
               shell: powershell
 
             - name: deploy
               run: |
-                  echo "deploying"
-                  Copy-Item -r dist\test\browser\* C:\iisServer\angular\
+                    echo "deploying"
+                    Copy-Item -r dist\test\browser\* C:\iisServer\angular\
               shell: powershell
 
             - name: Start IIS Site
               run: |
-                  echo "starting IIS server"
-                  Start-IISSite -Name "angular app"
+                    echo "starting IIS server"
+                    Start-IISSite -Name "angular app"
               shell: powershell
