@@ -76,7 +76,9 @@ jobs:
                   if(Test-Path $NewPath ){
                       Move-Item -Path $NewPath -Destination $BackupPath
                   }
-                  Copy-Item -Recurse dist\test\browser\* $NewPath
+
+                  New-Item -ItemType Directory -Path $NewPath
+                  Copy-Item -Recurse -Path dist\test\browser\* -Destination $NewPath
                   if(Test-Path "$BackupPath\web.config"){
                       Copy-Item "$BackupPath\web.config" "$NewPath\web.config"
                   }
