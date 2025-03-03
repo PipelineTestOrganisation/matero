@@ -1,28 +1,38 @@
-$BackupPath = "C:\iisServer\angular-27-02-2025"
-$NewPath = "C:\iisServer\angular"
+$pathMainFolder = "C:\iisServer"
+$nameProject = "angular"
+
+$regexFolderCheck = "$nameProject-\d{4}-\d{2}-\d{2}( \(\d+\))?$"  
+
+$NewPath = "$pathMainFolder\$nameProject"
+$BackupPath = "$newPath-$(Get-Date -Format "yyyy-MM-dd")"
+$BackupPath = "$newPath-2025-03-01"
+$directories = Get-ChildItem -Path $pathMainFolder -Directory | Where-Object { $_.Name -match $regexFolderCheck }
+
+
+if($directories.Count -gt 3){
+        $directories | Sort-Object -Property LastWriteTime | Select-Object -First ($directories.Count - 2) | Remove-Item -Recurse
+}
+
 
 if(Test-Path $BackupPath){
-    $duplicateItems = Get-Item "$BackupPath*"
+    $duplicateItems = $directories | Where-Object { $_.Name -like $BackupPath }
     if ($duplicateItems) {
         $measure = $duplicateItems | Measure-Object
-        Write-Output "Count: $($measure.Count)"
         for ($i = $($measure.Count -1); $i -ge 0; $i--) {
-            Write-Output "Index: $i"
+            
             if ($duplicateItems[$i].FullName) {
-                Write-Output "FullName: $($duplicateItems[$i].FullName)"
                 Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i + 1))"
-            } else {
-                Write-Output "FullName is null for index $i"
             }
         }
     }
 }
 
-
 if(Test-Path $NewPath ){
     Move-Item -Path $NewPath -Destination $BackupPath
 }
-Copy-Item -Recurse dist\test\browser\* "$NewPath\"
+
+New-Item -ItemType Directory -Path $NewPath
+Copy-Item -Recurse -Path C:\GitProjects\matero\test\dist\test\browser\* -Destination $NewPath
 if(Test-Path "$BackupPath\web.config"){
     Copy-Item "$BackupPath\web.config" "$NewPath\web.config"
 }
