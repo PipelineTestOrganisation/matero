@@ -13,6 +13,8 @@ if(Test-Path $BackupPath){
                 Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i + 1))"
             } else {
                 Write-Output "FullName is null for index $i"
+                $m = Get-Location
+                Write-Output $m
             }
         }
     }
