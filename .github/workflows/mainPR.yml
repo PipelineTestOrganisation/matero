@@ -27,7 +27,6 @@ jobs:
                   ref: ${{ github.event.inputs.version || 'main' }}
                   fetch-depth: 0 # Fetch all history for all branches and tags
 
-
             - name: Install dependencies
               run: npm install
 
@@ -35,8 +34,6 @@ jobs:
               run: |
                   echo "building app"
                   npm run build
-
-
 
     deploy:
         needs: build
@@ -46,27 +43,37 @@ jobs:
                 working-directory: test # Set the working directory for the test job
         runs-on: self-hosted
 
-        steps: 
+        steps:
             - name: Stop IIS Site
               run: |
-                    echo "stopping IIS server"
-                    Stop-IISSite -name "angular app" -confirm:$false
+                  echo "stopping IIS server"
+                  Stop-IISSite -name "angular app" -confirm:$false
               shell: powershell
 
-            - name: Backup IIS Directory
+            - name: Backup and deploy IIS Directory
               run: |
-                    echo "Making backup"
-                    Copy-Item -Path "C:\iisServer\angular" -Destination "C:\iisServer\angular-$(Get-Date -Format 'dd-MM-yyyy')" -Recurse -force
-              shell: powershell
+                  $BackupPath = "C:\iisServer\angular-27-02-2025"
+                  $NewPath = "C:\iisServer\angular"
 
-            - name: deploy
-              run: |
-                    echo "deploying"
-                    Copy-Item -r dist\test\browser\* C:\iisServer\angular\
+                  $duplicateItems = Get-Item "$BackupPath*"
+                  if ($duplicateItems) {
+                      $measure = Measure-Object -InputObject $duplicateItems
+                      Write-Output $duplicateItems
+                      for ($i = $measure.Count; $i -ge 0; $i--) {
+                          if ($null -ne $duplicateItems[$i]) {
+                              $duplicateItems[$i].name
+                              Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i + 1))"
+                          }
+                      }
+                  }
+
+                  Move-Item -Path $NewPath -Destination $BackupPath
+                  Copy-Item -r dist\test\browser\* $NewPath
+                  Copy-Item "$BackupPath\web.config" $NewPath -ErrorAction SilentlyContinue
               shell: powershell
 
             - name: Start IIS Site
               run: |
-                    echo "starting IIS server"
-                    Start-IISSite -Name "angular app"
+                  echo "starting IIS server"
+                  Start-IISSite -Name "angular app"
               shell: powershell
