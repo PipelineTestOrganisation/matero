@@ -53,7 +53,7 @@ jobs:
             - name: Backup and deploy IIS Directory
               run: |
                   $BackupPath = "C:\iisServer\angular-27-02-2025"
-                  $NewPath = "C:\iisServer\angular\"
+                  $NewPath = "C:\iisServer\angular"
 
                   if(Test-Path $BackupPath){
                       $duplicateItems = Get-Item "$BackupPath*"
@@ -76,18 +76,9 @@ jobs:
                   if(Test-Path $NewPath ){
                       Move-Item -Path $NewPath -Destination $BackupPath
                   }
-
-                  $m = Get-Location
-                  Write-Output $m
-                  if(test-Path $NewPath){
-                      write-Output ok
-                  }
-                  if(test-path dist\test\browser){
-                      write-Output browser
-                  }
-                  Copy-Item -Recurse dist\test\browser\* C:\iisServer\angular
-                  if(Test-Path $BackupPath){
-                      Copy-Item "$BackupPath\web.config" $NewPath
+                  Copy-Item -Recurse dist\test\browser\* $NewPath
+                  if(Test-Path "$BackupPath\web.config"){
+                      Copy-Item "$BackupPath\web.config" "$NewPath\web.config"
                   }
 
               shell: powershell

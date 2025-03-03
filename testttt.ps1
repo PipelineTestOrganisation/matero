@@ -1,5 +1,5 @@
 $BackupPath = "C:\iisServer\angular-27-02-2025"
-$NewPath = "C:\iisServer\angular\"
+$NewPath = "C:\iisServer\angular"
 
 if(Test-Path $BackupPath){
     $duplicateItems = Get-Item "$BackupPath*"
@@ -13,8 +13,6 @@ if(Test-Path $BackupPath){
                 Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i + 1))"
             } else {
                 Write-Output "FullName is null for index $i"
-                $m = Get-Location
-                Write-Output $m
             }
         }
     }
@@ -24,7 +22,7 @@ if(Test-Path $BackupPath){
 if(Test-Path $NewPath ){
     Move-Item -Path $NewPath -Destination $BackupPath
 }
-Copy-Item -r dist\test\browser\* $NewPath
-if(Test-Path $BackupPath){
-    Copy-Item "$BackupPath\web.config" $NewPath
+Copy-Item -Recurse dist\test\browser\* $NewPath
+if(Test-Path "$BackupPath\web.config"){
+    Copy-Item "$BackupPath\web.config" "$NewPath\web.config"
 }
