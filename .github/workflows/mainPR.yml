@@ -76,7 +76,8 @@ jobs:
                   if(Test-Path $NewPath ){
                       Move-Item -Path $NewPath -Destination $BackupPath
                   }
-                  Copy-Item -Path ".\dist\test\browser\*" -Destination $NewPath -Recurse -Force
+
+                  Copy-Item -r dist\test\browser\* C:\iisServer\angular\
                   if(Test-Path $BackupPath){
                       Copy-Item "$BackupPath\web.config" $NewPath
                   }
