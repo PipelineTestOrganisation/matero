@@ -9,6 +9,8 @@ if ($duplicateItems) {
     for ($i = $measure.Count; $i -ge 0; $i--) {
         if ($null -ne $duplicateItems[$i]) {
             $duplicateItems[$i].name
+            $duplicateItems[$i].FullName
+            $duplicateItems[$i]
             Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i +1 ))"
         }
     }
