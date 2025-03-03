@@ -7,9 +7,9 @@ if ($duplicateItems) {
     Write-Output $duplicateItems.Count
     write-output $measure
     for ($i = $measure.Count; $i -ge 0; $i--) {
-        if ($null -ne $duplicateItems[$i-1]) {
-            $duplicateItems[$i-1].name
-            Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i + 1))"
+        if ($null -ne $duplicateItems[$i]) {
+            $duplicateItems[$i].name
+            Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i +1 ))"
         }
     }
 }
