@@ -22,7 +22,7 @@ if(Test-Path $BackupPath){
 if(Test-Path $NewPath ){
     Move-Item -Path $NewPath -Destination $BackupPath
 }
-Copy-Item -Recurse dist\test\browser\* $NewPath
+Copy-Item -Recurse dist\test\browser\* "$NewPath\"
 if(Test-Path "$BackupPath\web.config"){
     Copy-Item "$BackupPath\web.config" "$NewPath\web.config"
 }
