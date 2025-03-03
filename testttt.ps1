@@ -5,6 +5,7 @@ $duplicateItems = Get-Item "$BackupPath*"
 if ($duplicateItems) {
     $measure = $duplicateItems | Measure-Object
     for ($i = $measure.Count -1 ; $i -ge 0; $i--) {
+        $duplicateItems[$i]
         Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i + 1 ))"
     }
 }
