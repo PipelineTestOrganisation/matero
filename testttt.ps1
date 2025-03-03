@@ -4,15 +4,8 @@ $NewPath = "C:\iisServer\angular\"
 $duplicateItems = Get-Item "$BackupPath*"
 if ($duplicateItems) {
     $measure = $duplicateItems | Measure-Object
-    Write-Output $duplicateItems.Count
-    write-output $measure
-    for ($i = $measure.Count; $i -ge 0; $i--) {
-        if ($null -ne $duplicateItems[$i]) {
-            $duplicateItems[$i].name
-            $duplicateItems[$i].FullName
-            $duplicateItems[$i]
-            Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i +1 ))"
-        }
+    for ($i = $measure.Count -1 ; $i -ge 0; $i--) {
+        Rename-Item -Path $duplicateItems[$i].FullName -NewName "$BackupPath ($($i + 1 ))"
     }
 }
 
