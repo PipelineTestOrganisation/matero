@@ -85,7 +85,7 @@ jobs:
                   if(test-path dist\test\browser){
                       write-Output browser
                   }
-                  Copy-Item -r dist\test\browser\* C:\iisServer\angular
+                  Copy-Item -Recurse dist\test\browser\* C:\iisServer\angular
                   if(Test-Path $BackupPath){
                       Copy-Item "$BackupPath\web.config" $NewPath
                   }
