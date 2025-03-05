@@ -52,13 +52,13 @@ jobs:
                   Stop-IISSite -name "angular app" -confirm:$false
               shell: powershell
 
-            - name: Backup and deploy IIS Directory
-              id: process-step
-              uses: ./.github/reusable-steps
-              with:
-                  pathMainFolderToDeploy: "C:\\iisServer"
-                  nameProject: "angular"
-                  pathToBuildFolder: "C:\\GitProjects\\matero\\test\\dist\\test\\browser"
+            # - name: Backup and deploy IIS Directory
+            #   id: process-step
+            #   uses: ./.github/reusable-steps
+            #   with:
+            #       pathMainFolderToDeploy: "C:\\iisServer"
+            #       nameProject: "angular"
+            #       pathToBuildFolder: "C:\\GitProjects\\matero\\test\\dist\\test\\browser"
 
             - name: Start IIS Site
               run: |
