@@ -1,17 +1,19 @@
-$pathMainFolder = "C:\iisServer"
+$pathMainFolderToDeploy = "C:\iisServer"
 $nameProject = "angular"
+$pathBuildFolder = "C:\GitProjects\matero\test\dist\test\browser"
+
 
 $regexFolderCheck = "$nameProject-\d{4}-\d{2}-\d{2}( \((\d{0,2})\))?$"  
 
-$NewPath = "$pathMainFolder\$nameProject"
+$NewPath = "$pathMainFolderToDeploy\$nameProject"
 $BackupPath = "$newPath-$(Get-Date -Format "yyyy-MM-dd")"
-$directories = Get-ChildItem -Path $pathMainFolder -Directory | Where-Object { $_.Name -match $regexFolderCheck }
+$directories = Get-ChildItem -Path $pathMainFolderToDeploy -Directory | Where-Object { $_.Name -match $regexFolderCheck }
 
 if ($directories.Count -gt 3) {
     $directories | Sort-Object -Property LastWriteTime | Select-Object -First 1 | Remove-Item -Recurse
 }
 
-$directories = Get-ChildItem -Path $pathMainFolder -Directory | Where-Object { $_.Name -match $regexFolderCheck }
+$directories = Get-ChildItem -Path $pathMainFolderToDeploy -Directory | Where-Object { $_.Name -match $regexFolderCheck }
 
 if (Test-Path $BackupPath) {
 
@@ -31,7 +33,7 @@ if (Test-Path $NewPath ) {
 }
 
 New-Item -ItemType Directory -Path $NewPath
-Copy-Item -Recurse -Path C:\GitProjects\matero\test\dist\test\browser\* -Destination $NewPath
+Copy-Item -Recurse -Path "$pathBuildFolder\*" -Destination $NewPath
 if (Test-Path "$BackupPath\web.config") {
     Copy-Item "$BackupPath\web.config" "$NewPath\web.config"
 }
